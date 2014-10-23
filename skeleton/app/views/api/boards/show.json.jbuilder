@@ -3,7 +3,8 @@
 #  - its lists
 #    - the cards for each list
 
-
 json.(@board, :title, :created_at, :updated_at)
 
-json.set! :message, "this is a test"
+json.lists @board.lists do |json, list|
+  json.partial! list
+end

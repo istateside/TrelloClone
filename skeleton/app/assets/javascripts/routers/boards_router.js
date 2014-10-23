@@ -33,16 +33,17 @@ TrelloClone.Routers.Boards = Backbone.Router.extend({
   },
 
   showBoard: function(id) {
-    var that = this;
-    TrelloClone.boards.fetch({ success: function() {
-      var board = TrelloClone.boards.get(id);
+    var board = TrelloClone.boards.getOrFetch(id);
+    var boardView = new TrelloClone.Views.BoardsShow({
+      model: board
+    });
 
-      var showView = new TrelloClone.Views.BoardsShow({
-        model: board
-      });
+    this._swapView(boardView);
+    // append all lists
 
-      that._swapView(showView);
-    }});
+    // append cards
+
+
   },
 
   _swapView: function(view) {
