@@ -1,6 +1,9 @@
 <h1>My Boards</h1>
 <ul>
 <% boards.each(function(board) { %>
-<li><%= board.get('title') %> <button id="delete-btn" data-id="<%= board.get('id') %>">Delete Board</button></li>
+<li data-id="<%= board.get('id') %>">
+  <a href="#/board/<%= board.get('id') %>" class="board-link"><%= board.get('title') %></a>
+  <button class="delete-btn">Delete</button>
+</li>
 <% }); %>
 </ul>

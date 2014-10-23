@@ -15,3 +15,35 @@
 
 @import "bootstrap";
 @import "font-awesome";
+
+
+body {
+  font-family: sans-serif;
+  background: #5483C4;
+}
+
+.content {
+  padding: 5px 15px 15px 15px;
+  background: white;
+  width: 90%;
+  border-radius: 10px;
+  margin: 0 auto;
+}
+
+.delete-btn {
+  border-radius: 5px;
+  background: #5483C4;
+  color: white;
+  font-family: sans-serif;
+  padding: 5px;
+}
+
+h1 {
+  border-bottom: 1px solid gray;
+  padding-bottom: 10px;
+}
+
+a.board-link {
+  font-weight: bold;
+  font-size: 18px;
+}
