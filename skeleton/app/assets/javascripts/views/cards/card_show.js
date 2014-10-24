@@ -3,7 +3,9 @@ TrelloClone.Views.CardsShow = Backbone.View.extend({
     this.listenTo(this.model, "sync change", this.render);
     this.subViews = [];
   },
-
+  events: {
+    "click .delete-btn": "deleteCard"
+  },
   tagName: 'div',
   className: 'card-div panel panel-default',
 
@@ -13,14 +15,19 @@ TrelloClone.Views.CardsShow = Backbone.View.extend({
     var content = this.template({ card: this.model });
     this.$el.html(content);
 
-    var that = this;
+    var $itemDiv = this.$('ul.item-list');
     var items = this.model.items();
+    var that = this;
 
     items.each(function(item) {
       var view = new TrelloClone.Views.ItemsShow({ model: item });
       that.subViews.push(view);
-      that.$('ul.item-list').append(view.render().$el);
+      $itemDiv.append(view.render().$el);
     });
+
+    var newItemView = new TrelloClone.Views.ItemsNew({ model: new TrelloClone.Models.CardItem });
+    this.subViews.push(newItemView);
+    $itemDiv.append(newItemView.render().$el)
     return this;
   },
 
@@ -29,5 +36,11 @@ TrelloClone.Views.CardsShow = Backbone.View.extend({
       subView.leave();
     });
     this.remove();
+  },
+  deleteCard: function() {
+    event.preventDefault();
+    console.log("Click!");
+    console.log(this.model)
+    this.model.destroy();
   }
 });

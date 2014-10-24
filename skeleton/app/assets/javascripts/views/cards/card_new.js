@@ -1,26 +1,20 @@
-TrelloClone.Views.CardsShow = Backbone.View.extend({
+TrelloClone.Views.CardsNew = Backbone.View.extend({
   initialize: function() {
-    this.listenTo(this.model, "sync change", this.render);
     this.subViews = [];
+  },
+  events: {
+    "submit form": "submit"
   },
 
   tagName: 'div',
-  className: 'card-div panel panel-default',
+  className: 'card-div new-card panel panel-default',
 
-  template: JST['cards/show'],
+  template: JST['cards/new'],
 
   render: function() {
-    var content = this.template({ card: this.model });
+    var content = this.template();
+
     this.$el.html(content);
-
-    var that = this;
-    var items = this.model.items();
-
-    items.each(function(item) {
-      var view = new TrelloClone.Views.ItemsShow({ model: item });
-      that.subViews.push(view);
-      that.$('ul.item-list').append(view.render().$el);
-    });
     return this;
   },
 
@@ -29,5 +23,14 @@ TrelloClone.Views.CardsShow = Backbone.View.extend({
       subView.leave();
     });
     this.remove();
+  },
+
+  submit: function (event) {
+    event.preventDefault();
+
+    var params = $(event.target).serializeJSON();
+    params.list_id = this.collection.list.id;
+    console.log(params);
+    var newCard = this.collection.create(params);
   }
 });

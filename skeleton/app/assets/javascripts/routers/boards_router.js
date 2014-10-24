@@ -42,8 +42,6 @@ TrelloClone.Routers.Boards = Backbone.Router.extend({
     // append all lists
 
     // append cards
-
-
   },
 
   _swapView: function(view) {

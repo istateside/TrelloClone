@@ -1,6 +1,10 @@
 <div class="panel-heading">
-  <p class="list-header"><%= card.escape('title') %></p>
+  <p class="list-header"><%= card.escape('title') %>
+  <button class="delete-btn" type="button"></button></p>
 </div>
-<div class="panel-body"><%= card.escape('description') %></div>
-<ul class="item-list list-group">
-</ul>
+<div class="panel-body">
+  <%= card.escape('description') %>
+
+  <ul class="item-list list-group">
+  </ul>
+</div>

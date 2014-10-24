@@ -1,7 +1,6 @@
 TrelloClone.Collections.Boards = Backbone.Collection.extend({
   initialize: function() {
     this.fetch();
-    this.listenTo
   },
 
   model: TrelloClone.Models.Board,
