@@ -4,11 +4,11 @@ module Api
 
     def create
       @card = current_list.cards.new(card_params)
-
       if @card.save
         render json: @card
       else
-        render json: @card.errors.full_messages, status: :unprocessable_entity
+        render json: @card.errors.full_messages,
+               status: :unprocessable_entity
       end
     end
 
@@ -23,7 +23,6 @@ module Api
     end
 
     private
-
     def current_list
       if params[:id]
         @card = Card.find(params[:id])

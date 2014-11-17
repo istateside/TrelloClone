@@ -1,13 +1,22 @@
 TrelloClone.Views.CardsShow = Backbone.View.extend({
   initialize: function() {
     this.listenTo(this.model, "sync change", this.render);
+    this.listenTo(this.model.items(), 'add', this.newItem);
     this.subViews = [];
   },
+
   events: {
     "click .delete-btn": "deleteCard"
   },
+
   tagName: 'div',
-  className: 'card-div panel panel-default',
+  className: 'card-div list-card panel panel-default',
+
+  attributes: function() {
+    return {
+      'data-card-id': this.model.id
+      }
+  },
 
   template: JST['cards/show'],
 
@@ -19,16 +28,32 @@ TrelloClone.Views.CardsShow = Backbone.View.extend({
     var items = this.model.items();
     var that = this;
 
-    items.each(function(item) {
-      var view = new TrelloClone.Views.ItemsShow({ model: item });
-      that.subViews.push(view);
-      $itemDiv.append(view.render().$el);
-    });
+    // items.each(function(item) {
+    //   var view = new TrelloClone.Views.ItemsShow({
+    //     model: item,
+    //     collection: items
+    //   });
+    //   that.subViews.push(view);
+    //   $itemDiv.append(view.render().$el);
+    // });
+    //
+    // var newItemView = new TrelloClone.Views.ItemsNew({
+    //   collection: items
+    // });
+    // this.subViews.push(newItemView);
+    // $itemDiv.append(newItemView.render().$el)
 
-    var newItemView = new TrelloClone.Views.ItemsNew({ model: new TrelloClone.Models.CardItem });
-    this.subViews.push(newItemView);
-    $itemDiv.append(newItemView.render().$el)
     return this;
+  },
+
+  newItem: function(item) {
+    var view = new TrelloClone.Views.ItemsShow({
+      model: item,
+      collection: this.model.items()
+    });
+    this.subViews.push(view);
+
+    this.$('ul.item-list').append(view.render().$el);
   },
 
   leave: function() {
@@ -37,10 +62,9 @@ TrelloClone.Views.CardsShow = Backbone.View.extend({
     });
     this.remove();
   },
+
   deleteCard: function() {
     event.preventDefault();
-    console.log("Click!");
-    console.log(this.model)
     this.model.destroy();
   }
 });

@@ -3,7 +3,7 @@ TrelloClone.Views.CardsNew = Backbone.View.extend({
     this.subViews = [];
   },
   events: {
-    "submit form": "submit"
+    "submit form.card-form": "submit"
   },
 
   tagName: 'div',
@@ -27,10 +27,8 @@ TrelloClone.Views.CardsNew = Backbone.View.extend({
 
   submit: function (event) {
     event.preventDefault();
-
     var params = $(event.target).serializeJSON();
     params.list_id = this.collection.list.id;
-    console.log(params);
     var newCard = this.collection.create(params);
   }
 });

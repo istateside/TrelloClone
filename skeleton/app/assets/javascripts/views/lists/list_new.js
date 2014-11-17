@@ -2,24 +2,31 @@ TrelloClone.Views.ListsNew = Backbone.View.extend({
   initialize: function() {
     this.subViews = [];
   },
+
   events: {
-    "submit": "submit"
+    "click .list-btn": "submit"
   },
+
   tagName: 'div',
-  className: 'list-div new-list',
+
+  className: 'new-list',
+
   template: JST['lists/new'],
+
   render: function() {
     var content = this.template();
 
     this.$el.html(content);
     return this;
   },
+
   leave: function() {
     this.subViews.forEach(function(subView) {
       subView.leave();
     });
     this.remove();
   },
+
   submit: function (event) {
     event.preventDefault();
 

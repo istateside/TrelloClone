@@ -1,4 +1,4 @@
-TrelloClone.Routers.Boards = Backbone.Router.extend({
+TrelloClone.Routers.Router = Backbone.Router.extend({
   initialize: function (options) {
     this.$el = options.$el;
     this._currentView = null;
@@ -11,14 +11,13 @@ TrelloClone.Routers.Boards = Backbone.Router.extend({
   },
 
   index: function() {
-    var that = this;
-    TrelloClone.boards.fetch({success: function() {
-      var indexView = new TrelloClone.Views.BoardsIndex({
-        collection: TrelloClone.boards
-      });
+    TrelloClone.Collections.boards.fetch();
 
-      that._swapView(indexView);
-    }});
+    var view = new TrelloClone.Views.BoardsIndex({
+      collection: TrelloClone.Collections.boards
+    })
+
+    this._swapView(view);
   },
 
   newBoard: function() {
@@ -33,20 +32,22 @@ TrelloClone.Routers.Boards = Backbone.Router.extend({
   },
 
   showBoard: function(id) {
-    var board = TrelloClone.boards.getOrFetch(id);
+    var board = TrelloClone.Collections.boards.getOrFetch(id);
+    
     var boardView = new TrelloClone.Views.BoardsShow({
       model: board
     });
 
     this._swapView(boardView);
-    // append all lists
-
-    // append cards
   },
 
   _swapView: function(view) {
-    this._currentView && this._currentView.remove();
-    this._currentView = view;
-    this.$el.html(view.render().$el);
+    var that = this;
+    $('div.content').fadeOut(200, function() {
+      that._currentView && that._currentView.remove();
+      that._currentView = view;
+      that.$el.html(view.render().$el);
+      $('div.content').fadeIn(200);
+    });
   }
 });

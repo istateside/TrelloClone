@@ -49,6 +49,7 @@ nav.navbar {
   width: 90%;
   border-radius: 10px;
   margin: 0 auto;
+  display: none;
 }
 
 h1 {
@@ -59,6 +60,35 @@ h1 {
 a.board-link {
   font-weight: bold;
   font-size: 18px;
+}
+
+div.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+div.modal {
+    position:absolute;
+    background:url(tint20.png) 0 0 repeat;
+    background:rgba(0,0,0,0.2);
+    border-radius:14px;
+    padding:8px;
+}
+
+div.modal .content {
+    border-radius:8px;
+    background:#fff;
+    padding:20px;
+}
+/* SIGN IN */
+div.sign-in-div {
+  position: relative;
+  top: 50px;
 }
 
 /* BOARDS */
@@ -99,6 +129,17 @@ div.list-div:hover .new-card {
 };
 
 /* CARDS */
+div.card-div {
+  position: relative;
+  transition: position 200ms;
+}
+
+div.card-div:hover {
+  position: relative;
+  bottom: 5px;
+  right: 5px;
+  box-shadow: 4px 4px 4px #CCCCCC;
+}
 
 .new-card {
   display: none;
@@ -131,25 +172,44 @@ div.card-div:hover button.delete-btn {
 }
 
 div.card-div:hover button.delete-btn:hover {
-    display: inline-block;
-    border-radius: 50%;
-    background: red;
-    opacity: 1.0;
+  display: inline-block;
+  border-radius: 50%;
+  background: red;
+  opacity: 1.0;
 }
-
 
 div.panel-heading {
   padding: 0px;
 }
 
-div.card-div:hover {
-  position: relative;
-  bottom: 5px;
-  right: 5px;
-  box-shadow: 4px 4px 4px #CCCCCC;
+/* ITEMS */
+
+li.item {
+  background: #ffffff;
+  transition: background 400ms;
 }
 
-/* ITEMS */
+li.item.done {
+  background: #bebebe;
+}
+
+li.item p {
+  display: inline;
+}
+
+li.item.done p {
+  color: #979797;
+}
+
+li.item span.check {
+  float: right;
+  display: none;
+}
+
+li.item.done span.check {
+  display: block;
+}
+
 .new-item {
   display: none;
 }

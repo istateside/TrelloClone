@@ -1,38 +1,46 @@
-TrelloClone.Views.BoardsShow = Backbone.View.extend({
-  initialize: function() {
-    this.listenTo(this.model, "change sync", this.render);
-    this.listenTo(this.model.lists(), "change sync remove", this.render)
-    this.subViews = [];
-  },
+TrelloClone.Views.BoardsShow = Backbone.CompositeView.extend({
 
   template: JST['boards/show'],
+
   tagName: 'div',
-  className: 'board-div',
+
+  className: 'board-div group',
+
+  events: {
+    'sortstop': 'saveOrds'
+  },
+
+  orderOptions: {
+    modelElement: 'div.list-div',
+    modelName: "list",
+    subviewContainer: ".list-list"
+  },
+
+  initialize: function() {
+    this.collection = this.model.lists();
+    this.listenTo(this.collection, "add", this.addList);
+  },
+
+  addList: function(list) {
+    var view = new TrelloClone.Views.ListShow({
+      model: list,
+      collection: list.cards()
+    });
+    this.addSubview('div.list-list', view);
+  },
 
   render: function() {
     var content = this.template({
       board: this.model
     });
-
     this.$el.html(content);
-
-    var that = this;
-    var $listDiv = that.$('div.list-list');
-    var lists = this.model.lists();
-
-    lists.each(function(list) {
-
-      var view = new TrelloClone.Views.ListsShow({ model: list });
-
-      that.subViews.push(view);
-      $listDiv.append(view.render().$el);
-    });
-
-    var newListView = new TrelloClone.Views.ListsNew({ collection: this.model.lists() });
-    this.subViews.push(newListView);
-    $listDiv.append(newListView.render().$el)
-
+    this.renderLists();
     return this;
+  },
+
+  renderLists: function() {
+    this.model.lists().each(this.addList.bind(this));
+    this.$('.list-list').sortable({items: '> .board-list'});
   },
 
   leave: function() {
@@ -42,3 +50,4 @@ TrelloClone.Views.BoardsShow = Backbone.View.extend({
     this.remove();
   }
 });
+_.extend(TrelloClone.Views.BoardsShow.prototype, TrelloClone.Utils.OrderedView);
